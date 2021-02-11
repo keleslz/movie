@@ -1,36 +1,39 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home, Search, FilmDetail } from '../Components/Views';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Home } from "../Components/Home";
+import { Search } from "../Components/Search";
+import { FilmDetail } from "../Components/FilmDetail";
 
 const HomeStack = createStackNavigator();
-const SearchStack = createStackNavigator();
-const FilmDetailStack = createStackNavigator();
-
 export const HomeStackScreen = () => {
     return (
         <HomeStack.Navigator>
-            <HomeStack.Screen name="Home" component={Home} />
+            <HomeStack.Screen name="Home" component={Home} options={{title : 'Accueil'}} />
         </HomeStack.Navigator>
     );
 }
 
+const SearchStack = createStackNavigator();
 export const SearchStackScreen = () => {
-    return (
+    return(
         <SearchStack.Navigator>
-            <SearchStack.Screen name="Search" component={Search} />
+            <SearchStack.Screen name="Search" component={Search} options={{title : 'Rechercher'}} />
+            <SearchStack.Screen name="FilmDetail" component={FilmDetail} options={{title : 'Detail'}} />
         </SearchStack.Navigator>
     );
 }
 
+const FilmDetailStack = createStackNavigator();
 export const FilmDetailScreen = () => {
-    return (
-        <FilmDetail.Navigator>
-            <FilmDetail.Screen name="FilmDetail" component={FilmDetail} />
-        </FilmDetail.Navigator>
-    );
+    if(true) {
+        return (
+            <FilmDetailStack.Navigator>
+                <FilmDetailStack.Screen name="FilmDetail" component={FilmDetail} options={{title : 'Details'}} />
+            </FilmDetailStack.Navigator>
+        );
+    }
 }
-
 
 const Tabs = createBottomTabNavigator();
 

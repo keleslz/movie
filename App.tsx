@@ -5,20 +5,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { TabsBottomBar, HomeStackScreen, SearchStackScreen, FilmDetailScreen } from './Navigations/Navigation';
-
-import { Home } from "./Components/Home";
-import { Search } from "./Components/Search";
-import { FilmDetail } from "./Components/FilmDetail";
+import { Provider } from 'react-redux';
+import Store from "./Store/configureStore";
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      {/* Si on est pas connecté on appel Token < AuthStackScreen /> */}
-        <TabsBottomBar />
-    </NavigationContainer>
+      <Provider  store={Store}>
+        <NavigationContainer>
+          {/* Si on est pas connecté on appel Token < AuthStackScreen /> */}
+
+            <TabsBottomBar />
+        </NavigationContainer>
+      </Provider>
   );
 }
 

@@ -4,6 +4,7 @@ import { StyleSheet, View, TextInput, Button, Text, FlatList, ActivityIndicator 
 import { FilmItem } from './FilmItem';
 import { getMovieFromAPi } from '../Api/Tmdb';
 import { GlobalStyles } from '../assets/styles/GlobalStyles';
+import { ToggleFavoriteReducer } from '../Store/Reducers/favoriteReducer';
 
 export class Search extends React.Component {
 
@@ -57,6 +58,8 @@ export class Search extends React.Component {
   }
 
   render() {
+    // const reducer = ToggleFavoriteReducer(undefined, {}); Continuer le tutto voir comment on recupere le reducer
+
     return (
       <View style={{flex:1}}>
       <View style={GlobalStyles.inputContainer}>

@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, Button, Image  } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { cos } from 'react-native-reanimated';
 import { getMoviePictureFromAPi } from '../Api/Tmdb';
 import { GlobalStyles } from "../assets/styles/GlobalStyles";
+import { ToggleFavoriteReducer } from '../Store/Reducers/favoriteReducer';
 import { isFavoriteIcon } from '../Tools/Tools';
 
 const Container = ({ children }) => {
@@ -16,17 +18,46 @@ const Header = ({ children }) => {
 const Description = ({ children }) => {
     return <Text numberOfLines={6} style={styles.description}>{ children }</Text>
 };
-
 export class FilmItem extends React.Component {
 
     constructor(props) {
         super(props)
     }
 
-    getPicture = (path) => {
+    _getPicture = (path) => {
         return path !== null ?  { uri: getMoviePictureFromAPi(path) } : require('../assets/images/no-image.png') ;
     }
+    /**
+     * Récupère la liste des favoris directement grâce au ToggleFavoriteReducer
+     */
+    _getFavorites = () => {
+        const film = this.props.films.item; 
+        const action = { type: "TOGGLE_FAVORITE", value: film};
+        const state = ToggleFavoriteReducer(undefined, {});
+        const myfavoriteList = state.favoritesFilm;
+        return { film, action, state, myfavoriteList } 
+    }
 
+    _displayFavoriteImage = (id) => {
+
+        const { film, myfavoriteList } = this._getFavorites();
+        console.log(myfavoriteList)
+        let  sourceImage = require('../assets/images/ic_no_favorite.png');
+        let favorite = false;
+
+        if (myfavoriteList.findIndex(item => item.id === film.id) !== -1) {
+          sourceImage = require('../assets/images/ic_favorite.png')
+          favorite = true
+        }
+
+        return (
+          <Image
+            style={styles.icon}
+            source={sourceImage}
+          />
+        )
+    }
+    
     render() {
         const film = this.props.films.item; 
         const path = film.poster_path;
@@ -36,13 +67,13 @@ export class FilmItem extends React.Component {
                 onPress={()=> { 
                     this.props.navigation.navigate('FilmDetail', { film : film  })
                 }}>
-                 <Image style={styles.image} source={ this.getPicture(path) } /> 
+                 <Image style={styles.image} source={ this._getPicture(path) } /> 
                     <Container>
                         <Header>
                             <Text numberOfLines={1} style={styles.title}>{film.title}</Text>
                             <Text style={styles.note}>{film.vote_average}</Text>
                         </Header>
-                        <Image style={styles.icon} source={isFavoriteIcon()}/>
+                        {this._displayFavoriteImage(film.id)}
                         <Description >{film.overview ? film.overview : 'Aucune description'}</Description>
                     </Container>
             </TouchableOpacity>

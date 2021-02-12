@@ -1,6 +1,8 @@
 import React from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Image } from 'react-native';
 import { Home } from "../Components/Home";
 import { Search } from "../Components/Search";
 import { FilmDetail } from "../Components/FilmDetail";
@@ -40,8 +42,20 @@ const Tabs = createBottomTabNavigator();
 export const TabsBottomBar = () => {
     return(
     <Tabs.Navigator>
-        <Tabs.Screen name="Home" component={HomeStackScreen} />
-        <Tabs.Screen name="Search" component={SearchStackScreen} />
+        <Tabs.Screen name="Home" component={HomeStackScreen} 
+            options={{
+                tabBarLabel:() => null,
+                tabBarBadge: 0,
+                tabBarIcon: ({ color }) => ( <Icon name="home" color={color} size={26} /> )
+            }}
+            
+        />
+        <Tabs.Screen name="Search" component={SearchStackScreen} 
+            options={{
+                tabBarLabel:() => null,
+                tabBarIcon: ({ color }) =>  <Icon name="search" color={color} size={26} /> 
+            }}
+        />
     </Tabs.Navigator>
     );
 }

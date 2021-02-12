@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, Image  } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getMoviePictureFromAPi } from '../Api/Tmdb';
+import { isFavoriteIcon } from '../Tools/Tools';
 
 export const FilmDetail = ({ route, navigation }) => {
 
@@ -21,7 +22,7 @@ export const FilmDetail = ({ route, navigation }) => {
             <Text numberOfLines={1} style={styles.title}>{film.title}</Text>
             <View style={styles.iconContainer}>
                 <TouchableOpacity style={{padding : 3}} onPress={() => setFavorite() }>
-                    <Image style={styles.icon} source={getPicture(film.poster_path)}/>
+                    <Image style={styles.icon} source={isFavoriteIcon()}/>
                 </TouchableOpacity>
             </View>
             <Text style={styles.note}>{film.vote_average}</Text>

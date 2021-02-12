@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, Button, Image  } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { getMoviePictureFromAPi } from '../Api/Tmdb';
 import { GlobalStyles } from "../assets/styles/GlobalStyles";
+import { isFavoriteIcon } from '../Tools/Tools';
 
 const Container = ({ children }) => {
     return <View style={styles.container}>{ children }</View>
@@ -22,17 +23,12 @@ export class FilmItem extends React.Component {
         super(props)
     }
 
-    _isFavorite = () => {
-        return require('../assets/images/ic_favorite.png');
-    }
-
     getPicture = (path) => {
         return path !== null ?  { uri: getMoviePictureFromAPi(path) } : require('../assets/images/no-image.png') ;
     }
 
     render() {
-
-        const film = this.props.films; 
+        const film = this.props.films.item; 
         const path = film.poster_path;
         return(
             <TouchableOpacity
@@ -40,19 +36,20 @@ export class FilmItem extends React.Component {
                 onPress={()=> { 
                     this.props.navigation.navigate('FilmDetail', { film : film  })
                 }}>
-                <Image style={styles.image} source={ this.getPicture(path) } />
-                <Container>
-                    <Header>
-                        <Text numberOfLines={1} style={styles.title}>{film.title}</Text>
-                        <Text  style={styles.note}>{film.vote_average}</Text>
-                    </Header>
-                    <Image style={styles.icon} source={this._isFavorite()}/>
-                    <Description >{film.overview ? film.overview : 'Aucune description'}</Description>
-                </Container>
+                 <Image style={styles.image} source={ this.getPicture(path) } /> 
+                    <Container>
+                        <Header>
+                            <Text numberOfLines={1} style={styles.title}>{film.title}</Text>
+                            <Text style={styles.note}>{film.vote_average}</Text>
+                        </Header>
+                        <Image style={styles.icon} source={isFavoriteIcon()}/>
+                        <Description >{film.overview ? film.overview : 'Aucune description'}</Description>
+                    </Container>
             </TouchableOpacity>
         );
     }
 }
+
 
 const styles = StyleSheet.create({
     mainContainer :{
